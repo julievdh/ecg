@@ -104,7 +104,7 @@ while 1,
       ihi = diff(H(:,1)) ;
       h = H(1:end-1,1) ;
       ymax = min([MAXHR,max(ihi(h>st & h<ed))*1.25]) ;
-      ihi = min(ihi,ymax) ;
+      % ihi = min(ihi,ymax) ;
       ihi(kn) = NaN ;
       set(h2,'XData',h,'YData',ihi) ;
       set(ax2,'YLim',[0 ymax]) ;
