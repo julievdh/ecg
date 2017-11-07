@@ -2,6 +2,13 @@
 Thumbs.db
 ehthumbs.db
 
+# Figures
+*.fig
+*.png 
+
+# .mat files
+*.mat
+
 # Folder config file
 Desktop.ini
 
