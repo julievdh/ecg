@@ -1,7 +1,7 @@
 % Field HR ECG
 
 %%
-tag = 'tt17_132u';
+tag = 'tt17_132y';
 prefix = strcat(tag(1:2),tag(6:9));
 recdir = strcat(gettagpath('AUDIO'),'/',tag(1:4),'/',tag);
 %%

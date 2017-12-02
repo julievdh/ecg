@@ -58,3 +58,16 @@ ylabel('Instantaneous HR'), xlabel('Time since tag on (s)')
 
 % plot individual beats if you want
 % plot(H(:,1),zeros(length(H),1)+80,'*')
+
+return 
+
+%% 
+H2.HR = 60./diff(H2.H(:,1));
+figure(1), hold on
+plot(H2.H(2:end,1),H2.HR,'k--')
+
+figure(2), clf, hold on
+plott(ecgfilt,ecgfilt_fs), hold on
+plott(H2.ecgfilt,H2.ecgfiltfs)
+plot(H(:,1),zeros(length(H),1),'r*')
+plot(H2.H(:,1),zeros(length(H2.H),1),'ko')
