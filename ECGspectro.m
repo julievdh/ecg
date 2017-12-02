@@ -1,4 +1,25 @@
-% otherspec
+% ECGspectrogram: make a spectrogram of filtered ECG or of detected beats
+
+load('tt17_128z_ecg')
+HR = 60./diff(H(:,1));
+
+figure(1), clf, hold on
+plot(H(2:end,1),HR,'k.-') 
+t = (1:length(ecgfilt))/ecgfilt_fs;
+plot(t,ecgfilt)
+xlabel('Time (sec)'), ylabel('Instantaneous HR (BPM)')
+
+figure(2)
+make_specgram(ecgfilt,256,ecgfilt_fs);
+hold on
+plot(H(2:end,1),HR,'k.-') % plot instantaneous HR on top
+
+
+figure(3) % make spectrogram using the HR? This doesn't seem right
+make_specgram(HR,256);
+
+return
+
 
 % spectrogram of another signal, eg ECG or respiratory or fluke stroke rate
 % x = 3.5*ecg(2700).';
