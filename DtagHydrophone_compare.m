@@ -9,10 +9,12 @@ load('DtagHydrophone_130w_ecg') % ecg detections from JNO
 R = loadaudit(tag); % audit data 
 
 %% remove any DTAG beats > 890
-
 H(H>890,1) = NaN; 
 DTAGhb(DTAGhb>890) = NaN; 
+% null out bad sections
+nullHydrobeats
 
+%% plot JVDH DTAG data
 plotthisECG % plot this instantaneous HR from DTAG JvdH
 
 %% compute HR from Julie Oswald DTAG detections
@@ -40,8 +42,6 @@ for i = 1:length(Hwh)
 end
 
 %% plot HR from Chest Hydrophone
-% null out bad sections
-nullHydrobeats
 
 Hhr = 60./diff(Hhb(:,1));
 plot(Hhb(2:end,1)+offset,Hhr,'.-') % plot instantaneous HR on top
