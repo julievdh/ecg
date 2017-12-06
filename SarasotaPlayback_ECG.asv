@@ -6,7 +6,7 @@ warning off
 
 % import ECG data 
 cd C:\tag\tagdata\ecg
-load('tt132v_ecgthr'); % for 141y, combine two ecg .mat files
+load('tt132y_ecgthr'); % for 141y, combine two ecg .mat files
 
 % load audit
 R = loadaudit(tag) 
