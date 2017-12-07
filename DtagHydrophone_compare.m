@@ -86,7 +86,4 @@ xlim([-2*th 2*th])
 ylabel('Instantaneous HR (BPM)')
 title('Chest Hydrophone')
 
-%% median filter? 
-
-
 %% time since breath 

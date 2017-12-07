@@ -1,0 +1,31 @@
+% combine signals where have all three
+% use median of each
+
+
+% find nearest in other DTAG record
+nearestD = nearest(DTAGhb(:,1),H(:,1),0.2);
+% find nearest in Hydrophone
+nearestH = nearest(Hhb+offset,H(:,1),0.2);
+% take median
+medtime = nan(length(H),1);
+medHR = nan(length(H),1);
+for i = 100: 110; % 1:length(H)
+    if ~isnan(nearestD(i)) & ~isnan(nearestH(i)) == 1
+        medtime(:,i) = median([H(i+1,1),DTAGhb(nearestD(i)+1,1),Hhb(nearestH(i)+1)+offset]);
+        medHR(:,i) = median([HR(i,1),DTAGhr(nearestD(i)),Hhr(nearestH(i))]);
+    else
+        if ~isnan(nearestD(i)) == 1 % if DTAG measurement only exists
+            medtime(:,i) = median([H(i+1,1),DTAGhb(nearestD(i)+1,1)]);
+            medHR(:,i) = median([HR(i,1),DTAGhr(nearestD(i))]);
+        else
+            if ~isnan(nearestH(i)) == 1 % if hydrophone measurement only exists
+                medtime(:,i) = median([H(i+1,1),Hhb(nearestH(i)+1)+offset]);
+                medHR(:,i) = median([HR(i,1),Hhr(nearestH(i))]);
+            end
+        end
+    end
+    else 
+        medtime = 
+end
+
+plot(medtime,medHR,'ko-','Linewidth',2)
