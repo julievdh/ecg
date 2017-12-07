@@ -7,7 +7,8 @@ ehthumbs.db
 *.fig
 *.png 
 
-# .mat files
+# Data files
+*.xlsx
 
 
 # Folder config file
