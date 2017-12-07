@@ -1,7 +1,7 @@
-function [] = waterfallECG(H,HR,breaths)
+function [beats] = waterfallECGwh(H,HR,breaths,I,wh)
 
 % truncate HR at each breath time
-for i = 1:length(breaths.cue)
+for i = 1:length(wh)
     if i == length(breaths.cue)
         ii = find(H(:,1)>breaths.cue(i,1));
     else
@@ -14,14 +14,15 @@ for i = 1:length(breaths.cue)
     end
 end
 
-% put breath cues on figure 1
-for i = 1:length(breaths.cue)
-    text(breaths.cue(i,1),120,num2str(i))
+% put whistle cues on figure 1
+for i = 1:length(wh)
+    text(wh(i),120,num2str(i))
 end
 
 % waterfall through time
 figure(2), clf, hold on
-% waterfall(beats.breath)
-for i = 1:length(beats)-1
-    plot3(repmat(i,length(beats(i).breath),1),beats(i).breath,beats(i).HR)
+% waterfall(beats.breath) 
+% sort by I
+for i = 1:length(beats)
+    plot3(repmat(i,length(beats(I(i)).breath),1),beats(I(i)).breath,beats(I(i)).HR)
 end

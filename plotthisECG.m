@@ -49,7 +49,7 @@ H(null) = NaN;
 % calculate and plot HR
 HR = 60./diff(H(:,1));
 
-plot(H(2:end,1),HR,'r.-')
+plot(H(1:end-1,1),HR,'r.-')
 ylabel('Instantaneous HR'), xlabel('Time since tag on (s)')
 
 % plot individual beats if you want

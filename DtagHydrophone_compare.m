@@ -22,7 +22,7 @@ plotthisECG % plot this instantaneous HR from DTAG JvdH
 DTAGhb(all(DTAGhb==0,2),:)=[]; 
 
 DTAGhr = 60./diff(DTAGhb(:,1));
-plot(DTAGhb(2:end,1),DTAGhr,'b.-') % plot instantaneous HR on top
+plot(DTAGhb(1:end-1,1),DTAGhr,'b.-') % plot instantaneous HR on top
 
 %% add whistle times 
 % from DTAG
@@ -44,8 +44,12 @@ end
 %% plot HR from Chest Hydrophone
 
 Hhr = 60./diff(Hhb(:,1));
-plot(Hhb(2:end,1)+offset,Hhr,'.-') % plot instantaneous HR on top
+plot(Hhb(1:end-1,1)+offset,Hhr,'.-') % plot instantaneous HR on top
 
+%% median filter
+medfiltHR % not ideal. 
+test = medfilt1(medHR(~isnan(medHR)));
+plot(T(~isnan(medHR)),test,'m','Linewidth',2) % maybe 
 
 %% for each whistle, plot the iHR for a time before and after
 figure(2), clf, hold on
@@ -86,4 +90,35 @@ xlim([-2*th 2*th])
 ylabel('Instantaneous HR (BPM)')
 title('Chest Hydrophone')
 
+%% what about for 'test'
+figure(4), clf, hold on
+% find nearest heart beat to whistle
+Tshort = T(~isnan(medHR))';
+nearestT = nearest(Tshort,Hwh+offset); 
+th = 4; 
+for i = 1:length(Hwh)
+plot(Tshort(nearestT(i)-th:nearestT(i)+th,1)-Tshort(nearestT(i)),test(nearestT(i)-th:nearestT(i)+th),'.-') % center on zero
+end
+xlabel('Time relative to whistle (sec)')
+xlim([-2*th 2*th])
+ylabel('Instantaneous HR (BPM)')
+title('all combined, median, filtered')
+
+
 %% time since breath 
+% waterfallECG(H,HR,breaths)
+% waterfallECG(DTAGhb,DTAGhr,breaths)
+% waterfallECG(Hhb+offset,Hhr,breaths)
+
+% compute time from breath to whistle in DTAG 
+wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],-1); 
+wh_tpostb = DTAGwh - breaths.cue(wh_bcue,1); 
+wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],1); 
+wh_tpreb = DTAGwh - breaths.cue(wh_bcue,1); 
+
+
+% sort time since breath
+[B,I] = sort(wh_tpostb); % B = time since breath
+
+% plot with that index
+waterfallECGwh(H,HR,breaths,I,B,DTAGwh);
