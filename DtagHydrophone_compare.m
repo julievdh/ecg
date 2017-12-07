@@ -71,3 +71,7 @@ xlabel('Time relative to whistle (sec)')
 ylabel('Instantaneous HR (BPM)')
 title('DTAG JNO')
 
+%% median filter? 
+
+
+%% time since breath 
