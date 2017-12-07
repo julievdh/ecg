@@ -1,13 +1,14 @@
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
+*.asv #(what are these files anyway?)
 
 # Figures
 *.fig
 *.png 
 
 # .mat files
-*.mat
+
 
 # Folder config file
 Desktop.ini
