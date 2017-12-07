@@ -51,17 +51,36 @@ medfiltHR % not ideal.
 test = medfilt1(medHR(~isnan(medHR)));
 plot(T(~isnan(medHR)),test,'m','Linewidth',2) % maybe 
 
+
+%% time since breath 
+% waterfallECG(H,HR,breaths)
+% waterfallECG(DTAGhb,DTAGhr,breaths)
+% waterfallECG(Hhb+offset,Hhr,breaths)
+
+% compute time from breath to whistle in DTAG 
+wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],-1); 
+wh_tpostb = DTAGwh - breaths.cue(wh_bcue,1); 
+wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],1); 
+wh_tpreb = DTAGwh - breaths.cue(wh_bcue,1); 
+
+
+% sort time since breath
+[B,I] = sort(wh_tpostb); % B = time since breath
+
+% plot with that index
+waterfallECGwh(H,HR,breaths,I,B,DTAGwh);
+
 %% for each whistle, plot the iHR for a time before and after
 figure(2), clf, hold on
 % find nearest heart beat to whistle
 nearestH = nearest(H(:,1),DTAGwh); 
 th = 4; 
 for i = 1:length(DTAGwh)-1
-plot(H(nearestH(i)-th:nearestH(i)+th,1)-H(nearestH(i)),HR(nearestH(i)-th:nearestH(i)+th),'.-') % center on zero
+plot3(repmat(i,length(nearestH(I(i))-th:nearestH(I(i))+th),1),H(nearestH(I(i))-th:nearestH(I(i))+th,1)-H(nearestH(I(i))),HR(nearestH(I(i))-th:nearestH(I(i))+th),'.-') % center on zero
 end
-xlabel('Time relative to whistle (sec)')
-xlim([-2*th 2*th])
-ylabel('Instantaneous HR (BPM)')
+%xlabel('Time relative to whistle (sec)')
+%xlim([-2*th 2*th])
+%ylabel('Instantaneous HR (BPM)')
 title('DTAG JvdH')
 
 %% Plot DTAG JNO DtagHR -- SOMETHING NOT WORKING HERE
@@ -91,34 +110,17 @@ ylabel('Instantaneous HR (BPM)')
 title('Chest Hydrophone')
 
 %% what about for 'test'
-figure(4), clf, hold on
-% find nearest heart beat to whistle
-Tshort = T(~isnan(medHR))';
-nearestT = nearest(Tshort,Hwh+offset); 
-th = 4; 
-for i = 1:length(Hwh)
-plot(Tshort(nearestT(i)-th:nearestT(i)+th,1)-Tshort(nearestT(i)),test(nearestT(i)-th:nearestT(i)+th),'.-') % center on zero
-end
-xlabel('Time relative to whistle (sec)')
-xlim([-2*th 2*th])
-ylabel('Instantaneous HR (BPM)')
-title('all combined, median, filtered')
+% figure(4), clf, hold on
+% % find nearest heart beat to whistle
+% Tshort = T(~isnan(medHR))';
+% nearestT = nearest(Tshort,Hwh+offset); 
+% th = 4; 
+% for i = 1:length(Hwh)
+% plot(Tshort(nearestT(i)-th:nearestT(i)+th,1)-Tshort(nearestT(i)),test(nearestT(i)-th:nearestT(i)+th),'.-') % center on zero
+% end
+% xlabel('Time relative to whistle (sec)')
+% xlim([-2*th 2*th])
+% ylabel('Instantaneous HR (BPM)')
+% title('all combined, median, filtered')
 
 
-%% time since breath 
-% waterfallECG(H,HR,breaths)
-% waterfallECG(DTAGhb,DTAGhr,breaths)
-% waterfallECG(Hhb+offset,Hhr,breaths)
-
-% compute time from breath to whistle in DTAG 
-wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],-1); 
-wh_tpostb = DTAGwh - breaths.cue(wh_bcue,1); 
-wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],1); 
-wh_tpreb = DTAGwh - breaths.cue(wh_bcue,1); 
-
-
-% sort time since breath
-[B,I] = sort(wh_tpostb); % B = time since breath
-
-% plot with that index
-waterfallECGwh(H,HR,breaths,I,B,DTAGwh);

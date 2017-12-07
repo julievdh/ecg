@@ -1,6 +1,42 @@
 % combine signals where have all three
 % use median of each
 
+%% try something new
+% make a time vector
+T = min([min(H(:,1)) min(DTAGhb) min(Hhb)+offset]):0.5:max([max(H(:,1)) max(DTAGhb) max(Hhb)+offset]);
+
+% remove NaNs
+HRn = HR(~isnan(HR),:);
+Hn = H(~isnan(HR),:);
+
+DTAGhbn = DTAGhb(~isnan(DTAGhr)); 
+DTAGhrn = DTAGhr(~isnan(DTAGhr)); 
+
+Hhrn = Hhr(~isnan(Hhr));
+Hhbn = Hhb(~isnan(Hhr));
+
+% interpolate each time series at those points 
+sHR = interp1(Hn(:,1),HRn,T,'spline');
+sDTAGhr = interp1(DTAGhbn,DTAGhrn,T,'spline');
+sHhr = interp1(Hhbn+offset,Hhrn,T,'spline'); 
+
+figure(10), clf, hold on
+plot(T,sHR,'.-')
+plot(T,sDTAGhr,'.-')
+plot(T,sHhr,'.-')
+
+% put the NaNs back in 
+
+
+% take median of all three 
+all3 = nanmedian([sHR' sDTAGhr' sHhr']');
+
+plot(T,all3,'ko-')
+
+
+return 
+
+
 % make a time vector
 T = min([min(H(:,1)) min(DTAGhb) min(Hhb)+offset]):0.2:max([max(H(:,1)) max(DTAGhb) max(Hhb)+offset]);
 % find nearest value in JVDH DTAG record
