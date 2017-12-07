@@ -1,6 +1,6 @@
 % ECG HR comparison with Julie Oswald
 % 6 Dec 2017
-
+close all, clear 
 % load data
 cd C:\tag\tagdata\ecg
 load('tt17_130w_ecg') % ecg detections from JvdH
@@ -56,20 +56,35 @@ for i = 1:length(DTAGwh)-1
 plot(H(nearestH(i)-th:nearestH(i)+th,1)-H(nearestH(i)),HR(nearestH(i)-th:nearestH(i)+th),'.-') % center on zero
 end
 xlabel('Time relative to whistle (sec)')
+xlim([-2*th 2*th])
 ylabel('Instantaneous HR (BPM)')
 title('DTAG JvdH')
 
 %% Plot DTAG JNO DtagHR -- SOMETHING NOT WORKING HERE
 figure(3), clf, hold on
 % find nearest heart beat to whistle
-nearestDh = nearest(DTAGhr(:,1),DTAGwh); 
+nearestDh = nearest(DTAGhb(:,1),DTAGwh); 
 th = 4; 
 for i = 1:length(DTAGwh)-1
 plot(DTAGhb(nearestDh(i)-th:nearestDh(i)+th,1)-DTAGhb(nearestDh(i)),DTAGhr(nearestDh(i)-th:nearestDh(i)+th),'.-') % center on zero
 end
 xlabel('Time relative to whistle (sec)')
+xlim([-2*th 2*th])
 ylabel('Instantaneous HR (BPM)')
 title('DTAG JNO')
+
+%% Same for Hydrophone
+figure(4), clf, hold on
+% find nearest heart beat to whistle
+nearestHh = nearest(Hhb(:,1),Hwh); 
+th = 4; 
+for i = 1:length(Hwh)
+plot(Hhb(nearestHh(i)-th:nearestHh(i)+th,1)-Hhb(nearestHh(i)),Hhr(nearestHh(i)-th:nearestHh(i)+th),'.-') % center on zero
+end
+xlabel('Time relative to whistle (sec)')
+xlim([-2*th 2*th])
+ylabel('Instantaneous HR (BPM)')
+title('Chest Hydrophone')
 
 %% median filter? 
 
