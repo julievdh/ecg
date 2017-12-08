@@ -24,9 +24,10 @@ figure(10), clf, hold on
 plot(T,sHR,'.-')
 plot(T,sDTAGhr,'.-')
 plot(T,sHhr,'.-')
+ylim([0 120]) 
 
 % put the NaNs back in 
-
+nullHydrobeats
 
 % take median of all three 
 all3 = nanmedian([sHR' sDTAGhr' sHhr']');

@@ -6,7 +6,7 @@
 [~,pneum] = findaudit(R,'pneum');
 
 %%
-figure(1), clf, hold on
+figure(101), clf, hold on
 % plot(R.cue(:,1),zeros(length(R.cue)),'ko')
 plot(breaths.cue(:,1),zeros(length(breaths.cue)),'k.')
 for i = 1:length(breaths.cue)

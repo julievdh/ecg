@@ -33,9 +33,6 @@ if exist('T') == 1
         bad = find(iswithin(T,[startbad_tag(i)-0.5 endbad_tag(i)]));
         sDTAGhr(bad) = NaN;
     end
-    % NaN out before signal actually starts
-    sDTAGhr(T < DTAGhbn(1)) = NaN;
-    sDTAGhr(T > DTAGhbn(end)) = NaN; 
     
     % check:
     figure(10), plot(T,sDTAGhr,'m.-')
@@ -44,6 +41,5 @@ if exist('T') == 1
     null = find(H(:,2) == -1);
     nullT = nearest(T',null);
     sHR(nullT) = NaN;
-    sHR(T < Hn(1)) = NaN; sHR(T > Hn(end,1)) = NaN; % Nan outside of signal
     
 end

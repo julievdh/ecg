@@ -48,8 +48,8 @@ plot(Hhb(1:end-1,1)+offset,Hhr,'.-') % plot instantaneous HR on top
 
 %% median filter
 medfiltHR % not ideal. 
-test = medfilt1(medHR(~isnan(medHR)));
-plot(T(~isnan(medHR)),test,'m','Linewidth',2) % maybe 
+% test = medfilt1(medHR(~isnan(medHR)));
+% plot(T(~isnan(medHR)),test,'m','Linewidth',2) % maybe 
 
 
 %% time since breath 
