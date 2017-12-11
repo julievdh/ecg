@@ -1,5 +1,12 @@
 function [beats] = waterfallECGwh(H,HR,breaths,I,B,wh)
 
+% H is the time of beats 
+% HR is the instantaneous HR at that time 
+% breaths is the audit structure of breath times 
+% I is the index of sorted whistles based on time of breath
+% B is the time since the breath for each whistle 
+% wh is the time of the whistles
+
 % truncate HR at each breath time
 for i = 1:length(wh)
     if i == length(breaths.cue)

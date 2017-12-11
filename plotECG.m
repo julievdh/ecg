@@ -2,7 +2,7 @@
 uiopen
 
 % load tag audit
-% R = loadaudit(tag);load
+R = loadaudit(tag);
 
 %% find all sub-audits: breaths, inh, exh
 [~,breaths] = findaudit(R,'breath');
@@ -15,7 +15,9 @@ uiopen
 figure(1), clf, hold on
 % plot(R.cue(:,1),zeros(length(R.cue)),'ko')
 plot(breaths.cue(:,1),zeros(length(breaths.cue)),'k.')
-line([breaths.cue(:,1) breaths.cue(:,1)],[0 150],'color','k','linestyle',':')
+for i = 1:length(breaths.cue)
+line([breaths.cue(i,1) breaths.cue(i,1)],[0 150],'color','k','linestyle',':')
+end
 
 if isempty(inh.cue) ~= 1
     % plot all inhales

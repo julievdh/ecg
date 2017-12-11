@@ -47,15 +47,14 @@ Hhr = 60./diff(Hhb(:,1));
 plot(Hhb(1:end-1,1)+offset,Hhr,'.-') % plot instantaneous HR on top
 
 %% median filter
-medfiltHR % not ideal. 
-% test = medfilt1(medHR(~isnan(medHR)));
-% plot(T(~isnan(medHR)),test,'m','Linewidth',2) % maybe 
-
+medfiltHR 
+% outputs from this are T (time vector) and all3 (combined, filtered
+% instantaneous HR)
 
 %% time since breath 
 % waterfallECG(H,HR,breaths)
 % waterfallECG(DTAGhb,DTAGhr,breaths)
-% waterfallECG(Hhb+offset,Hhr,breaths)
+waterfallECG(T',all3,breaths)
 
 % compute time from breath to whistle in DTAG 
 wh_bcue = nearest(breaths.cue(:,1),DTAGwh,[],-1); 
@@ -68,7 +67,9 @@ wh_tpreb = DTAGwh - breaths.cue(wh_bcue,1);
 [B,I] = sort(wh_tpostb); % B = time since breath
 
 % plot with that index
-waterfallECGwh(H,HR,breaths,I,B,DTAGwh);
+% now does this with combined dataset
+waterfallECGwh(H,HR,breaths,I,B,DTAGwh); 
+% waterfallECGwh(T',all3,breaths,I,B,Hwh+offset);
 
 %% for each whistle, plot the iHR for a time before and after
 figure(2), clf, hold on
@@ -83,44 +84,15 @@ end
 %ylabel('Instantaneous HR (BPM)')
 title('DTAG JvdH')
 
-%% Plot DTAG JNO DtagHR -- SOMETHING NOT WORKING HERE
+%% Plot with all3 now
 figure(3), clf, hold on
 % find nearest heart beat to whistle
-nearestDh = nearest(DTAGhb(:,1),DTAGwh); 
+nearestTh = nearest(T',Hwh+offset); 
 th = 4; 
-for i = 1:length(DTAGwh)-1
-plot(DTAGhb(nearestDh(i)-th:nearestDh(i)+th,1)-DTAGhb(nearestDh(i)),DTAGhr(nearestDh(i)-th:nearestDh(i)+th),'.-') % center on zero
+for i = 1:length(Hwh)-1 % for all whistles 
+    plot(T(nearestTh(i)-th:nearestTh(i)+th)-T(nearestTh(i)),all3(nearestTh(i)-th:nearestTh(i)+th),'.-') % center on zero
 end
 xlabel('Time relative to whistle (sec)')
 xlim([-2*th 2*th])
 ylabel('Instantaneous HR (BPM)')
-title('DTAG JNO')
-
-%% Same for Hydrophone
-figure(4), clf, hold on
-% find nearest heart beat to whistle
-nearestHh = nearest(Hhb(:,1),Hwh); 
-th = 4; 
-for i = 1:length(Hwh)
-plot(Hhb(nearestHh(i)-th:nearestHh(i)+th,1)-Hhb(nearestHh(i)),Hhr(nearestHh(i)-th:nearestHh(i)+th),'.-') % center on zero
-end
-xlabel('Time relative to whistle (sec)')
-xlim([-2*th 2*th])
-ylabel('Instantaneous HR (BPM)')
-title('Chest Hydrophone')
-
-%% what about for 'test'
-% figure(4), clf, hold on
-% % find nearest heart beat to whistle
-% Tshort = T(~isnan(medHR))';
-% nearestT = nearest(Tshort,Hwh+offset); 
-% th = 4; 
-% for i = 1:length(Hwh)
-% plot(Tshort(nearestT(i)-th:nearestT(i)+th,1)-Tshort(nearestT(i)),test(nearestT(i)-th:nearestT(i)+th),'.-') % center on zero
-% end
-% xlabel('Time relative to whistle (sec)')
-% xlim([-2*th 2*th])
-% ylabel('Instantaneous HR (BPM)')
-% title('all combined, median, filtered')
-
-
+title('all3 Time Series')
